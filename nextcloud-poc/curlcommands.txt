@@ -1,0 +1,46 @@
+1. Get Quota
+curl -X GET http://localhost:4000/api/nextcloud/quota
+
+2. Get System Information
+curl -X GET http://localhost:4000/api/nextcloud/system-info
+
+3. Create Folder
+curl -X POST http://localhost:4000/api/nextcloud/create-folder \
+-H "Content-Type: application/json" \
+-d '{"folderPath": "cases/case_002"}'
+
+4. Delete Folder
+curl -X DELETE http://localhost:4000/api/nextcloud/delete-folder \
+-H "Content-Type: application/json" \
+-d '{"folderPath": "cases/case_001"}'
+
+5. Create File
+curl -X POST http://localhost:4000/api/nextcloud/create-file \
+-H "Content-Type: application/json" \
+-d '{"folderPath": "cases/case_002", "fileName": "case002.docx", "content": "This is a test file."}'
+
+6. Delete File
+curl -X DELETE http://localhost:4000/api/nextcloud/delete-file \
+-H "Content-Type: application/json" \
+-d '{"filePath": "cases/case_002/case002.docx"}'
+
+7. Move (or Rename) File
+curl -X POST http://localhost:4000/api/nextcloud/move-file \
+-H "Content-Type: application/json" \
+-d '{"filePath": "cases/case_001/note.txt", "newFilePath": "cases/case_001/renamed_note.txt"}'
+
+8. Add Tag to File
+curl -X POST http://localhost:4000/api/nextcloud/add-tag \
+-H "Content-Type: application/json" \
+-d '{"filePath": "/cases/case_001/note.txt", "tag": "important"}'
+
+9. Create Share
+curl -X POST http://localhost:4000/api/nextcloud/create-share \
+-H "Content-Type: application/json" \
+-d '{"filePath": "/cases/case_001/note.txt", "password": "secure123", "note": "This is a shared file", "expirationDate": "2024-12-31"}'
+
+
+10. Get Files
+curl -X POST http://localhost:4000/api/nextcloud/files \
+-H "Content-Type: application/json" \
+-d '{"folderPath": "/cases" }'

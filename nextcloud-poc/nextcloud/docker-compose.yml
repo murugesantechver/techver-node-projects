@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+  db:
+    image: mariadb:10.6
+    container_name: nextcloud-db
+    restart: always
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=example_root_password
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud_user
+      - MYSQL_PASSWORD=password
+
+  nextcloud:
+    image: nextcloud:latest
+    container_name: nextcloud-app
+    restart: always
+    ports:
+      - "8080:80"
+    links:
+      - db
+      - collabora
+    depends_on:
+      - db
+    volumes:
+      - nextcloud_data:/var/www/html
+    environment:
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud_user
+      - MYSQL_PASSWORD=password
+      - MYSQL_HOST=db
+
+  collabora:
+    image: collabora/code
+    container_name: collabora
+    restart: always
+    ports:
+      - "9980:9980"
+    environment:
+      - domain=localhost
+      - username=admin
+      - password=secret
+      - extra_params=--o:ssl.enable=false
+    cap_add:
+      - MKNOD
+    volumes:
+      - collabora_data:/var/lib/lool
+
+volumes:
+  db_data:
+  nextcloud_data:
+  collabora_data:
